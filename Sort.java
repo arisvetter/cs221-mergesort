@@ -1,0 +1,199 @@
+import java.util.Comparator;
+
+/**
+ * Class for sorting lists that implement the IndexedUnsortedList interface,
+ * using ordering defined by class of objects in list or a Comparator.
+ * As written uses Mergesort algorithm.
+ *
+ * @author CS221
+ */
+public class Sort {
+	/**
+	 * Returns a new list that implements the IndexedUnsortedList interface.
+	 * As configured, uses WrappedDLL. Must be changed if using
+	 * your own IUDoubleLinkedList class.
+	 * 
+	 * @return a new list that implements the IndexedUnsortedList interface
+	 */
+	private static <T> IndexedUnsortedList<T> newList() {
+		return new WrappedDLL<T>(); // TODO: replace with your IUDoubleLinkedList for extra-credit
+	}
+
+	/**
+	 * Sorts a list that implements the IndexedUnsortedList interface
+	 * using compareTo() method defined by class of objects in list.
+	 * DO NOT MODIFY THIS METHOD
+	 * 
+	 * @param <T>
+	 *             The class of elements in the list, must extend Comparable
+	 * @param list
+	 *             The list to be sorted, implements IndexedUnsortedList interface
+	 * @see IndexedUnsortedList
+	 */
+	public static <T extends Comparable<T>> void sort(IndexedUnsortedList<T> list) {
+		mergesort(list);
+	}
+
+	/**
+	 * Sorts a list that implements the IndexedUnsortedList interface
+	 * using given Comparator.
+	 * DO NOT MODIFY THIS METHOD
+	 * 
+	 * @param <T>
+	 *             The class of elements in the list
+	 * @param list
+	 *             The list to be sorted, implements IndexedUnsortedList interface
+	 * @param c
+	 *             The Comparator used
+	 * @see IndexedUnsortedList
+	 */
+	public static <T> void sort(IndexedUnsortedList<T> list, Comparator<T> c) {
+		mergesort(list, c);
+	}
+
+	/**
+	 * Mergesort algorithm to sort objects in a list
+	 * that implements the IndexedUnsortedList interface,
+	 * using compareTo() method defined by class of objects in list.
+	 * DO NOT MODIFY THIS METHOD SIGNATURE
+	 * 
+	 * @param <T>
+	 *             The class of elements in the list, must extend Comparable
+	 * @param list
+	 *             The list to be sorted, implements IndexedUnsortedList interface
+	 */
+	private static <T extends Comparable<T>> void mergesort(IndexedUnsortedList<T> list) {
+		// TODO: Implement recursive mergesort algorithm
+		// break list into 2
+
+		//just so that we don't unecessarily sort a one element list
+		if (list.size() > 1) {
+			IndexedUnsortedList<T> leftList = newList();
+			IndexedUnsortedList<T> rightList = newList();
+			int midPoint = list.size() / 2;
+			//int indexCounter = 0;
+
+
+			for(int i = 0; !list.isEmpty(); i++){
+				if (i < midPoint) {
+					leftList.add(list.removeFirst());
+				} else {
+					rightList.add(list.removeFirst());
+				}
+			}
+
+			/** 
+			for (T element : list) {
+				if (indexCounter < midPoint) {
+					leftList.add(element);
+				} else {
+					rightList.add(element);
+				}
+				list.remove(element);
+				indexCounter++;
+			}*/
+			//System.out.println(leftList.toString());
+			//System.out.println(rightList.toString());
+
+			mergesort(leftList);
+			mergesort(rightList);
+			//all of left and right lists are 2 or 3
+
+			while (!leftList.isEmpty() && !rightList.isEmpty()) {
+				if(leftList.first().compareTo(rightList.first()) <= 0){
+					list.add(leftList.removeFirst());
+				} else {
+					list.add(rightList.removeFirst());
+				}
+
+
+			}
+
+			if(leftList.isEmpty()){
+				while(!rightList.isEmpty()){
+					list.add(rightList.removeFirst());
+
+				}
+			} else {
+				while(!leftList.isEmpty()){
+					list.add(leftList.removeFirst());
+				}
+			}
+
+		}
+		// continue to break until size of list is 1
+
+	}
+
+	/**
+	 * Mergesort algorithm to sort objects in a list
+	 * that implements the IndexedUnsortedList interface,
+	 * using the given Comparator.
+	 * DO NOT MODIFY THIS METHOD SIGNATURE
+	 * 
+	 * @param <T>
+	 *             The class of elements in the list
+	 * @param list
+	 *             The list to be sorted, implements IndexedUnsortedList interface
+	 * @param c
+	 *             The Comparator used
+	 */
+	private static <T> void mergesort(IndexedUnsortedList<T> list, Comparator<T> c) {
+		if (list.size() > 1) {
+			IndexedUnsortedList<T> leftList = newList();
+			IndexedUnsortedList<T> rightList = newList();
+			int midPoint = list.size() / 2;
+			//int indexCounter = 0;
+
+
+			for(int i = 0; !list.isEmpty(); i++){
+				if (i < midPoint) {
+					leftList.add(list.removeFirst());
+				} else {
+					rightList.add(list.removeFirst());
+				}
+			}
+
+			/** 
+			for (T element : list) {
+				if (indexCounter < midPoint) {
+					leftList.add(element);
+				} else {
+					rightList.add(element);
+				}
+				list.remove(element);
+				indexCounter++;
+			}*/
+			//System.out.println(leftList.toString());
+			//System.out.println(rightList.toString());
+
+			mergesort(leftList, c);
+			mergesort(rightList, c);
+			//all of left and right lists are 2 or 3
+
+			while (!leftList.isEmpty() && !rightList.isEmpty()) {
+				if(c.compare(leftList.first(), rightList.first()) <= 0){
+					list.add(leftList.removeFirst());
+				} else {
+					list.add(rightList.removeFirst());
+				}
+
+
+			}
+
+			if(leftList.isEmpty()){
+				while(!rightList.isEmpty()){
+					list.add(rightList.removeFirst());
+
+				}
+			} else {
+				while(!leftList.isEmpty()){
+					list.add(leftList.removeFirst());
+				}
+			}
+
+		}
+
+	}
+
+}
