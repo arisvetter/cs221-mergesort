@@ -5,7 +5,7 @@ import java.util.Comparator;
  * using ordering defined by class of objects in list or a Comparator.
  * As written uses Mergesort algorithm.
  *
- * @author CS221
+ * @author CS221, Aris Vetter
  */
 public class Sort {
 	/**
@@ -16,7 +16,7 @@ public class Sort {
 	 * @return a new list that implements the IndexedUnsortedList interface
 	 */
 	private static <T> IndexedUnsortedList<T> newList() {
-		return new WrappedDLL<T>(); // TODO: replace with your IUDoubleLinkedList for extra-credit
+		return new IUDoubleLinkedList<T>(); // replaced wth my own IUDoubleLinkedList
 	}
 
 	/**
@@ -63,18 +63,14 @@ public class Sort {
 	 *             The list to be sorted, implements IndexedUnsortedList interface
 	 */
 	private static <T extends Comparable<T>> void mergesort(IndexedUnsortedList<T> list) {
-		// TODO: Implement recursive mergesort algorithm
-		// break list into 2
 
-		//just so that we don't unecessarily sort a one element list
+		// break the list into two parts
 		if (list.size() > 1) {
 			IndexedUnsortedList<T> leftList = newList();
 			IndexedUnsortedList<T> rightList = newList();
 			int midPoint = list.size() / 2;
-			//int indexCounter = 0;
 
-
-			for(int i = 0; !list.isEmpty(); i++){
+			for (int i = 0; !list.isEmpty(); i++) {
 				if (i < midPoint) {
 					leftList.add(list.removeFirst());
 				} else {
@@ -82,46 +78,34 @@ public class Sort {
 				}
 			}
 
-			/** 
-			for (T element : list) {
-				if (indexCounter < midPoint) {
-					leftList.add(element);
-				} else {
-					rightList.add(element);
-				}
-				list.remove(element);
-				indexCounter++;
-			}*/
-			//System.out.println(leftList.toString());
-			//System.out.println(rightList.toString());
-
+			// recursively calls mergesort to continue to break down the lists
 			mergesort(leftList);
 			mergesort(rightList);
-			//all of left and right lists are 2 or 3
 
+			/*
+			 * Compares the first element of right list and left list, moves the one that
+			 * should be first from its current right/left list to list.
+			 */
 			while (!leftList.isEmpty() && !rightList.isEmpty()) {
-				if(leftList.first().compareTo(rightList.first()) <= 0){
+				if (leftList.first().compareTo(rightList.first()) <= 0) { // uses compareTo rather than compare
 					list.add(leftList.removeFirst());
 				} else {
 					list.add(rightList.removeFirst());
 				}
 
-
 			}
 
-			if(leftList.isEmpty()){
-				while(!rightList.isEmpty()){
+			// identifies the final element left in left or right list, adds to list.
+			if (leftList.isEmpty()) {
+				while (!rightList.isEmpty()) {
 					list.add(rightList.removeFirst());
-
 				}
 			} else {
-				while(!leftList.isEmpty()){
+				while (!leftList.isEmpty()) {
 					list.add(leftList.removeFirst());
 				}
 			}
-
 		}
-		// continue to break until size of list is 1
 
 	}
 
@@ -140,13 +124,12 @@ public class Sort {
 	 */
 	private static <T> void mergesort(IndexedUnsortedList<T> list, Comparator<T> c) {
 		if (list.size() > 1) {
+			// break the list into two parts
 			IndexedUnsortedList<T> leftList = newList();
 			IndexedUnsortedList<T> rightList = newList();
 			int midPoint = list.size() / 2;
-			//int indexCounter = 0;
 
-
-			for(int i = 0; !list.isEmpty(); i++){
+			for (int i = 0; !list.isEmpty(); i++) {
 				if (i < midPoint) {
 					leftList.add(list.removeFirst());
 				} else {
@@ -154,40 +137,32 @@ public class Sort {
 				}
 			}
 
-			/** 
-			for (T element : list) {
-				if (indexCounter < midPoint) {
-					leftList.add(element);
-				} else {
-					rightList.add(element);
-				}
-				list.remove(element);
-				indexCounter++;
-			}*/
-			//System.out.println(leftList.toString());
-			//System.out.println(rightList.toString());
-
+			// recursively calls mergesort to continue to break down the lists
 			mergesort(leftList, c);
 			mergesort(rightList, c);
-			//all of left and right lists are 2 or 3
 
+			/*
+			 * Compares the first element of right list and left list, moves the one that
+			 * should be first from its current right/left list to list.
+			 */
 			while (!leftList.isEmpty() && !rightList.isEmpty()) {
-				if(c.compare(leftList.first(), rightList.first()) <= 0){
+				// uses the comparator's compare rather than the list's compare
+				if (c.compare(leftList.first(), rightList.first()) <= 0) {
 					list.add(leftList.removeFirst());
 				} else {
 					list.add(rightList.removeFirst());
 				}
 
-
 			}
 
-			if(leftList.isEmpty()){
-				while(!rightList.isEmpty()){
+			// identifies the final element left in left or right list, adds to list.
+			if (leftList.isEmpty()) {
+				while (!rightList.isEmpty()) {
 					list.add(rightList.removeFirst());
 
 				}
 			} else {
-				while(!leftList.isEmpty()){
+				while (!leftList.isEmpty()) {
 					list.add(leftList.removeFirst());
 				}
 			}

@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * Test Sort class using WrappedDLL class.
- * @author CS221
+ * Test Sort class using IUDoubleLinkedList class.
+ * @author CS221, Aris Vetter
  */
 public class SortTester {
 	// initialized in constructor
@@ -88,8 +88,8 @@ public class SortTester {
 	 * in this one location rather than in every test.
 	 * @return [ ]
 	 */
-	private static IndexedUnsortedList<Integer> newList() {	//TODO: specify the underlying list class, here
-		return new WrappedDLL<Integer>();
+	private static IndexedUnsortedList<Integer> newList() {	//updated to use IUDoubleLinkedList
+		return new IUDoubleLinkedList<Integer>();
 	}
 	
 	/** @return [A] */
